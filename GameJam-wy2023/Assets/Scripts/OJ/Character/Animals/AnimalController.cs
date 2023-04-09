@@ -161,10 +161,14 @@ namespace OJ
         public override void PossessThis()
         {
             base.PossessThis();
+            gameObject.SetLayer(LayerMask.NameToLayer("Player"));
+            gameObject.tag = "Player";
         }
         public override void UnPossessThis()
         {
             base.UnPossessThis();
+            gameObject.SetLayer(LayerMask.NameToLayer("Animal"));
+            gameObject.tag = "Animal";
         }
     }
 }

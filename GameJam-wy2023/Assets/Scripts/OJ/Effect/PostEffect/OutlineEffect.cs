@@ -11,12 +11,16 @@ namespace OJ
         public float sampleDistance = 1f;
         public float sensitivityDepth = 1f;
         public float sensitivityNormals = 1f;
-
+        public RenderTexture rt;
         private void OnEnable() {
             effectCamera.depthTextureMode |= DepthTextureMode.DepthNormals;
         }
 
         private void OnRenderImage(RenderTexture src, RenderTexture dest) {
+            if(rt == null){
+                rt = RenderTexture.GetTemporary(src.width, src.height);
+            }
+            Graphics.Blit(src, rt);
             if(material!=null){
                 material.SetFloat("_EdgesOnly", edgesOnly);
                 material.SetColor("_EdgeColor", edgeColor);

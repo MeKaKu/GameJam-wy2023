@@ -105,6 +105,9 @@ namespace OJ
                     }
                 }
             }
+            else{
+                outlineCamera?.ClearTarget();
+            }
         }
     }
 }

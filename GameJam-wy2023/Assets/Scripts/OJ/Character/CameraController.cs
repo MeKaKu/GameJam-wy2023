@@ -47,15 +47,11 @@ namespace OJ
 
         public virtual void PossessThis(){
             possessed = true;
-            gameObject.layer = LayerMask.NameToLayer("Player");
-            gameObject.tag = "Player";
             //朝向
             rotY = transform.eulerAngles.y;
         }
         public virtual void UnPossessThis(){
             possessed = false;
-            gameObject.layer = LayerMask.NameToLayer("Animal");
-            gameObject.tag = "Animal";
             rotX = 0;
             lookAtPoint.localEulerAngles = new Vector3(rotX, 0, 0);
             cameraPoint.LookAt(lookAtPoint);

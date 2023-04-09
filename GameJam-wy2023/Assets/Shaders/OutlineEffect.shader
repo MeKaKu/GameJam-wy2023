@@ -12,8 +12,7 @@ Shader "Dye/OutlineEffect"
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" }
-        Blend SrcAlpha OneMinusSrcAlpha
+        Tags { "RenderType"="Opaque" }
         CGINCLUDE
         #include "UnityCG.cginc"
 
@@ -76,6 +75,9 @@ Shader "Dye/OutlineEffect"
             half same = 1.0;
             same *= CheckSame(sample1, sample2);
             same *= CheckSame(sample3 ,sample4);
+            if(0.5f - same < 0){
+                return tex2D(_MainTex, i.uv[0]);
+            }
             fixed4 col = lerp(tex2D(_MainTex, i.uv[0]), _BackgroundColor, _EdgesOnly);
             //float d = tex2D(_DepthTexture, i.uv[0]).x;
             col = lerp(_EdgeColor, col, same);
