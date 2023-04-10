@@ -34,15 +34,19 @@ namespace OJ
         }
         protected void OperateCamera(){
             if(!possessed){
+                cameraPoint.LookAt(lookAtPoint);
                 return;
             }
             Vector2 mouseMove = inputHandler.GetMouseMove();
             rotY += mouseMove.x * sensitivityX;
             rotX -= mouseMove.y * sensitivityY;
             rotX = Mathf.Clamp(rotX, -up, down);
-            transform.eulerAngles = new Vector3(0, rotY, 0);
+            OnViewChange(rotY);//模型朝向会出现问题...
             lookAtPoint.localEulerAngles = new Vector3(rotX, 0, 0);
             cameraPoint.LookAt(lookAtPoint);
+        }
+        protected virtual void OnViewChange(float rot_y){
+            transform.eulerAngles = new Vector3(0, rot_y, 0);
         }
 
         public virtual void PossessThis(){
@@ -62,5 +66,20 @@ namespace OJ
         //     cameraPoint = lookAtPoint?.Find("CameraPoint");
         //     cameraPoint.LookAt(lookAtPoint);
         // }
+
+        [ContextMenu("CheckAndResetCameraView")]
+        void CheckAndResetCameraPos(){
+            var lookAtPoint = transform.Find("LookAt");
+            if(!lookAtPoint){
+                Debug.LogWarning("Miss LookAt");
+                return;
+            }
+            var cameraPoint = lookAtPoint.Find("CameraPoint");
+            if(!cameraPoint){
+                Debug.LogWarning("Miss CameraPoint");
+                return;
+            }
+            cameraPoint.LookAt(lookAtPoint);
+        }
     }
 }

@@ -92,7 +92,12 @@ namespace OJ
                 Jump();
             }
         }
-
+        protected override void OnViewChange(float rot_y)
+        {
+            Vector3 tempForward = avatar.forward;
+            base.OnViewChange(rot_y);
+            avatar.forward = tempForward;
+        }
         protected virtual void ActByAI(){
             //...
             Move(Vector3.zero);
