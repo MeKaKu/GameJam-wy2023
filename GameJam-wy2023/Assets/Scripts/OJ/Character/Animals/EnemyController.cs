@@ -144,6 +144,19 @@ namespace OJ
                         (_playerPosition - transform.position).normalized, out hit, attackRange);
                     if (!b)
                     {
+                        if (Vector3.Distance(player.transform.position,transform.position)<1f)
+                        {
+                            if (life <= 0)
+                            {
+                                _isFov = false;
+                                Debug.Log("die");
+                                player.SetActive(false);
+                            }
+                            else
+                            {
+                                life = life- attack;
+                            }
+                        }
                         return;
                     }
                     if (hit.collider.transform.CompareTag("Player")  || Vector3.Distance(player.transform.position,transform.position)<1f)
@@ -151,6 +164,7 @@ namespace OJ
                         if (life <= 0)
                         {
                             _isFov = false;
+                            Debug.Log("die");
                             player.SetActive(false);
                         }
                         else
