@@ -15,12 +15,19 @@ namespace OJ
         public float up = 30;//向上看的最大角度
         [Range(0, 90)]
         public float down = 20;//向下看的最大角度
+        [SerializeField]bool showLocalView;
+        [Range(-10f, 10f)]
+        [SerializeField]protected float viewHeight = 1f;
+        [Range(-10f, 10f)]
+        [SerializeField]protected float viewSize = 2f;
         public bool possessed {get;private set;} = false;
         public Transform lookAtPoint {get; private set;}
         public Transform cameraPoint {get;private set;}
         public IInputHandler inputHandler = new PlayerInput();
-        float rotX;
-        float rotY;
+        [Range(-90, 90)]
+        [SerializeField]float rotX;
+        [Range(-360, 360)]
+        [SerializeField]float rotY;
         protected virtual void Awake() {
             lookAtPoint = transform.Find("LookAt");
             cameraPoint = lookAtPoint?.Find("CameraPoint");
@@ -28,6 +35,9 @@ namespace OJ
             //     Camera cam = cameraPoint.GetComponent<Camera>();
             //     cam.enabled = false;
             // }
+            ResetCameraView();
+            showLocalView = false;
+            cameraPoint.GetComponent<Camera>().enabled = false;
         }
         protected virtual void Update() {
             OperateCamera();
@@ -61,24 +71,32 @@ namespace OJ
             cameraPoint.LookAt(lookAtPoint);
         }
 
-        // protected virtual void OnValidate() {
-        //     lookAtPoint = transform.Find("LookAt");
-        //     cameraPoint = lookAtPoint?.Find("CameraPoint");
-        //     cameraPoint.LookAt(lookAtPoint);
-        // }
-
-        [ContextMenu("CheckAndResetCameraView")]
-        void CheckAndResetCameraPos(){
-            var lookAtPoint = transform.Find("LookAt");
+        protected virtual void OnValidate() {
+            lookAtPoint = transform.Find("LookAt");
             if(!lookAtPoint){
-                Debug.LogWarning("Miss LookAt");
-                return;
+                lookAtPoint = new GameObject("LookAt") .transform;
+                lookAtPoint.SetParent(transform);
             }
-            var cameraPoint = lookAtPoint.Find("CameraPoint");
+            cameraPoint = lookAtPoint.Find("CameraPoint");
             if(!cameraPoint){
-                Debug.LogWarning("Miss CameraPoint");
-                return;
+                cameraPoint = new GameObject("CameraPoint", typeof(Camera)) .transform;
+                cameraPoint.SetParent(transform);
             }
+            if(!cameraPoint.GetComponent<Camera>()){
+                cameraPoint.gameObject.AddComponent<Camera>();
+            }
+            lookAtPoint.localPosition = Vector3.up * viewHeight;
+            lookAtPoint.localEulerAngles = new Vector3(rotX, 0, 0);
+            cameraPoint.localPosition = -Vector3.forward * viewSize;
+            cameraPoint.localEulerAngles = new Vector3(0, rotY, 0);
+            cameraPoint.GetComponent<Camera>().enabled = showLocalView;
+        }
+
+        [ContextMenu("ResetCameraView")]
+        void ResetCameraView(){
+            rotX = 0;
+            rotY = 0;
+            lookAtPoint.localEulerAngles = Vector3.zero;
             cameraPoint.LookAt(lookAtPoint);
         }
     }

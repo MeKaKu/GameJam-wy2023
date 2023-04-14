@@ -29,7 +29,7 @@ namespace OJ
         protected bool onGround;
         protected Vector3 thrustVelocity = Vector3.zero;//当前帧需要施加的瞬间速度
         protected Vector3 thrustDeltaPosition = Vector3.zero;//当前帧需要施加的瞬间位移
-        Vector3 planeVelocity = Vector3.zero;
+        protected Vector3 planeVelocity = Vector3.zero;
         protected Vector3 avatarForward = Vector3.forward;
 
         [Header(">AI")]
@@ -114,12 +114,15 @@ namespace OJ
         protected virtual void ExitGround(){
             animator.SetBool("OnGround_b", false);
         }
+        protected virtual void StayGround(){
+            animator.SetBool("OnGround_b", true);
+        }
         protected virtual void OnMove(float moveSpeed){
             animator.SetFloat("Speed_f", moveSpeed);
         }
 
         //平面移动
-        protected void Move(Vector3 moveVelocity){
+        protected virtual void Move(Vector3 moveVelocity){
             if(!onGround) return;
             //朝向
             float moveSpeed = moveVelocity.magnitude;
@@ -153,6 +156,9 @@ namespace OJ
                             onGround = true;
                             EndJump();
                         }
+                        else{
+                            StayGround();
+                        }
                         return;
                     }
                 }
@@ -174,6 +180,11 @@ namespace OJ
             base.UnPossessThis();
             gameObject.SetLayer(LayerMask.NameToLayer("Animal"));
             gameObject.tag = "Animal";
+        }
+
+        [ContextMenu("Test/Death")]
+        void Die(){
+            animator.SetBool("Death_b", true);
         }
     }
 }
