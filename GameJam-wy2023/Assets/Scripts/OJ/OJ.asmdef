@@ -1,7 +1,10 @@
 {
     "name": "OJ",
     "rootNamespace": "OJ",
-    "references": [],
+    "references": [
+        "GUID:a2eedf64b7e17e64fafe44c7a8d886de",
+        "GUID:405e42bdb47b2954784ce828c4b356c8"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

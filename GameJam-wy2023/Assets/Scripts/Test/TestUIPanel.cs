@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DyeFramework.Modules;
+using OJ;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ public class TestUIPanel : PanelBase
     {
         switch(name){
             case "Btn_Radom":{
-                GetCom<Text>("Text_Title").text = Random.Range(0, 5).ToString();
+                GetCom<Text>("Text_Title").text = Random.Range(0, 5).ToString() + DataManager.configs.TbItem.Get(0).Type;
                 break;
             }
             case "Btn_Close":{
