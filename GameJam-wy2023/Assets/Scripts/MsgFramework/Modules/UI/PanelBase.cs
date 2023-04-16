@@ -45,6 +45,11 @@ namespace DyeFramework.Modules
                                 OnClick(key);
                             });
                         }
+                        else if(component is InputField){
+                            (component as InputField).onValueChanged.AddListener((value)=>{
+                                OnInput(key, value);
+                            });
+                        }
                     }
                     else if(component is PanelBase){
                         dict[key].Add(component);
@@ -57,6 +62,9 @@ namespace DyeFramework.Modules
             }
         }
         protected virtual void OnClick(string name){
+
+        }
+        protected virtual void OnInput(string name, string value){
 
         }
         protected override void OnDestroy(){
