@@ -63,7 +63,8 @@ namespace OJ
                 ActByAI();
             }
         }
-        protected virtual void FixedUpdate() {
+        protected override void FixedUpdate() {
+            base.FixedUpdate();
             rigid.position += thrustDeltaPosition;
             rigid.velocity = new Vector3(planeVelocity.x, rigid.velocity.y, planeVelocity.z) + thrustVelocity;
             thrustDeltaPosition = Vector3.zero;

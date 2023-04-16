@@ -6,6 +6,12 @@ namespace OJ
 {
     public class PlayerController : AnimalController
     {
+        protected override void Awake()
+        {
+            base.Awake();
+            if(animator == null)
+                animator = GetComponent<Animator>();
+        }
         [Header(">特效")]
         [SerializeField]Material dissolveMaterial;
         public void Dissolve(float duration, bool dissolve = true){

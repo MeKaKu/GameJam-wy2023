@@ -45,6 +45,10 @@ namespace OJ
         protected override void FixedUpdate()
         {
             if(changingPanel) return;
+            if(!inClimbing){
+                base.FixedUpdate();
+                return;
+            }
             rigid.position += thrustDeltaPosition;
             rigid.velocity = planeVelocity + thrustVelocity;
             thrustDeltaPosition = Vector3.zero;

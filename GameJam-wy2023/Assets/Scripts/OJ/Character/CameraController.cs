@@ -40,6 +40,9 @@ namespace OJ
             cameraPoint.GetComponent<Camera>().enabled = false;
         }
         protected virtual void Update() {
+
+        }
+        protected virtual void FixedUpdate() {
             OperateCamera();
         }
         protected void OperateCamera(){
@@ -72,6 +75,7 @@ namespace OJ
         }
 
         protected virtual void OnValidate() {
+            #if UNITY_EDITOR
             lookAtPoint = transform.Find("LookAt");
             if(!lookAtPoint){
                 lookAtPoint = new GameObject("LookAt") .transform;
@@ -90,6 +94,7 @@ namespace OJ
             cameraPoint.localPosition = -Vector3.forward * viewSize;
             cameraPoint.localEulerAngles = new Vector3(0, rotY, 0);
             cameraPoint.GetComponent<Camera>().enabled = showLocalView;
+            #endif
         }
 
         [ContextMenu("ResetCameraView")]

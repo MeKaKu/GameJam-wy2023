@@ -39,8 +39,11 @@ namespace OJ
                     Possess(playerController);
                 }
             }
-            Follow();
+            //Follow();
             Detect();
+        }
+        private void FixedUpdate() {
+            Follow();
         }
         public void Possess(CameraController cameraController){
             if(!cameraController) return;
@@ -86,10 +89,11 @@ namespace OJ
         }
         void Follow(){
             if(possessing) return;
-            transform.position = Vector3.MoveTowards(
+            transform.position = Vector3.SmoothDamp(
                 transform.position, 
                 followTarget.cameraPoint.transform.position, 
-                followSpeed * Time.deltaTime
+                ref speed,
+                1f/followSpeed
             );
             transform.LookAt(followTarget.lookAtPoint);
         }
