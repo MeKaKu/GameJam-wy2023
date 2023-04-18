@@ -46,5 +46,24 @@ namespace OJ
                 renderers[i].material = tempMats[i];
             }
         }
+        bool jumping;
+        protected override void StartJump()
+        {
+            base.StartJump();
+            jumping = true;
+        }
+        protected override void EndJump()
+        {
+            base.EndJump();
+            jumping = false;
+        }
+        private void OnAnimatorMove() {
+            if(!jumping){
+                Vector3 deltaPosition = avatar.TransformDirection( transform.InverseTransformVector( animator.deltaPosition ));
+                deltaPosition.y = 0;
+                thrustDeltaPosition += deltaPosition; 
+                planeVelocity = Vector3.zero;
+            }
+        }
     }
 }

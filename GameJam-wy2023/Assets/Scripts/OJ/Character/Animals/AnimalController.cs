@@ -69,7 +69,7 @@ namespace OJ
             rigid.velocity = new Vector3(planeVelocity.x, rigid.velocity.y, planeVelocity.z) + thrustVelocity;
             thrustDeltaPosition = Vector3.zero;
             thrustVelocity = Vector3.zero;
-
+            rigid.angularVelocity = Vector3.zero;
             DetectGround();
         }
 

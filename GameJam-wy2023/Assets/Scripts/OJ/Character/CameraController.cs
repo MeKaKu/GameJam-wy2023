@@ -84,7 +84,7 @@ namespace OJ
             cameraPoint = lookAtPoint.Find("CameraPoint");
             if(!cameraPoint){
                 cameraPoint = new GameObject("CameraPoint", typeof(Camera)) .transform;
-                cameraPoint.SetParent(transform);
+                cameraPoint.SetParent(lookAtPoint);
             }
             if(!cameraPoint.GetComponent<Camera>()){
                 cameraPoint.gameObject.AddComponent<Camera>();
