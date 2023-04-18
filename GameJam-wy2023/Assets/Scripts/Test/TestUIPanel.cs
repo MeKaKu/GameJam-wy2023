@@ -11,7 +11,10 @@ public class TestUIPanel : PanelBase
     {
         switch(name){
             case "Btn_Radom":{
-                GetCom<Text>("Text_Title").text = Random.Range(0, 5).ToString() + DataManager.configs.TbItem.Get(0).Type;
+                GetCom<Text>("Text_Title").text = Random.Range(0, 5).ToString();
+                foreach(var dialog in DataManager.configs.TbNpc[1].Dialogs){
+                    Debug.Log(dialog);
+                }
                 break;
             }
             case "Btn_Close":{

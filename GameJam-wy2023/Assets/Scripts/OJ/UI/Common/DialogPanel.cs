@@ -63,6 +63,7 @@ namespace OJ
             for(int i=0;i<dialog.options.Count;i++){
                 Button opt = GetCom<Button>("Btn_Option_" + i);
                 opt.GetComponentInChildren<Text>().text = dialog.options[i];
+                opt.gameObject.SetActive(true);
             }
         }
 

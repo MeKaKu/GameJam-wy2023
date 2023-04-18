@@ -14,21 +14,26 @@ namespace Dye
 public partial class Configs
 {
     public TbItem TbItem {get; }
+    public TbNpc TbNpc {get; }
 
     public Configs(System.Func<string, ByteBuf> loader)
     {
         var tables = new System.Collections.Generic.Dictionary<string, object>();
         TbItem = new TbItem(loader("tbitem")); 
         tables.Add("TbItem", TbItem);
+        TbNpc = new TbNpc(loader("tbnpc")); 
+        tables.Add("TbNpc", TbNpc);
 
         PostInit();
         TbItem.Resolve(tables); 
+        TbNpc.Resolve(tables); 
         PostResolve();
     }
 
     public void TranslateText(System.Func<string, string, string> translator)
     {
         TbItem.TranslateText(translator); 
+        TbNpc.TranslateText(translator); 
     }
     
     partial void PostInit();

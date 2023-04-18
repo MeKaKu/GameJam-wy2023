@@ -39,5 +39,9 @@ namespace Dye
         /// 信函
         /// </summary>
         Letter = 6,
+        /// <summary>
+        /// 宝石
+        /// </summary>
+        Gem = 7,
     }
 }
