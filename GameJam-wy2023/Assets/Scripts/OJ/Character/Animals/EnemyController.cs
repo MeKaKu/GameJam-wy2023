@@ -30,9 +30,15 @@ namespace OJ
         public float fov;
         [Header("视野距离")]
         public float fovLint;
+        [Header("ai光源")]
+        public Color color;
         //ai巡逻目的地，数组填
         [Header("巡逻目的地(按顺序填写)")]
         public List<Vector3> aiList;
+        //动画控制器
+        private Animator _animator;
+        //光源参数
+        private Light _light;
         //下标
         private int _aiListIndex = 0;
         //是否进入视野
@@ -56,9 +62,15 @@ namespace OJ
         // Start is called before the first frame update
         void Start()
         {
+            _animator = GetComponent<Animator>();
+            _light = GameObject.Find("/GuideRobot_rigged/Point Light").GetComponent<Light>();
+            _light.color = color;
+            _light.range = fovLint;
+            _light.spotAngle = fov;
             _meshAgent = GetComponent<NavMeshAgent>();
             // _sphereCollider = GetComponent<CapsuleCollider>();
-            _sphereCollider = GameObject.Find("/Enemy/test").GetComponent<SphereCollider>();
+            _sphereCollider = GameObject.Find("/GuideRobot_rigged/test").GetComponent<SphereCollider>();
+            
             _sphereCollider.radius = fovLint;
         }
 
@@ -91,7 +103,9 @@ namespace OJ
                 if (playerAngle < fov)
                 {
                     RaycastHit hit;
-                    if (Physics.Raycast(transform.position+transform.up,vector3.normalized,out hit,_sphereCollider.radius))
+                    bool b = Physics.Raycast(transform.position + transform.up, vector3.normalized, out hit,
+                        _sphereCollider.radius);
+                    if (b)
                     {
                         if (hit.collider.transform.CompareTag("Player"))
                         {
@@ -107,10 +121,13 @@ namespace OJ
             }
             else
             {
+                // Debug.Log(_aiListIndex);
                 _isShot = false;
                 _meshAgent.SetDestination(aiList[_aiListIndex]);
+                  //Debug.Log(Vector3.Distance(aiList[_aiListIndex],transform.position));
                 if (Vector3.Distance(aiList[_aiListIndex],transform.position)<1f)
                 {
+                  
                     if (aiList.Count == _aiListIndex+1)
                     {
                         _aiListIndex = 0;
