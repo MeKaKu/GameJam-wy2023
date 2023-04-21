@@ -10,12 +10,13 @@ namespace OJ
     public class OpeningPanel : PanelBase
     {
         private void Start() {
+            UIManager.HidePanel("LoadingPanel");
             Show();
             Text t1 = GetCom<Text>("Text_1");
             Text t2 = GetCom<Text>("Text_2");
             Sequence sequence = DOTween.Sequence();
             sequence.Append(
-                t1.DOFade(1, 1f).SetDelay(1f)
+                t1.DOFade(1, 1f).SetDelay(2f)
             );
             sequence.AppendInterval(2f);
             sequence.Append(

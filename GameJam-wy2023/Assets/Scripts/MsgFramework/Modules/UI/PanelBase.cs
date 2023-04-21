@@ -11,7 +11,7 @@ namespace DyeFramework.Modules
     {
         //name - components
         Dictionary<string, List<Component>> dict = new Dictionary<string, List<Component>>();
-        CanvasGroup group;
+        protected CanvasGroup group;
         protected virtual void Awake(){
             UIManager.RegisterPanel(this);
             GetUIComponents(transform);
@@ -50,6 +50,11 @@ namespace DyeFramework.Modules
                                 OnInput(key, value);
                             });
                         }
+                        else if(component is Slider){
+                            (component as Slider).onValueChanged.AddListener((value)=>{
+                                OnSlid(key, value);
+                            });
+                        }
                     }
                     else if(component is PanelBase){
                         dict[key].Add(component);
@@ -65,6 +70,9 @@ namespace DyeFramework.Modules
 
         }
         protected virtual void OnInput(string name, string value){
+
+        }
+        protected virtual void OnSlid(string name, float value){
 
         }
         protected override void OnDestroy(){

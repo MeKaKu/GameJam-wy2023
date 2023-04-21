@@ -34,6 +34,12 @@ namespace OJ
             GetCom<Image>("Img_Next").transform.DOMoveY(10, 1).SetRelative().SetLoops(-1, LoopType.Yoyo);
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            GetCom<Image>("Img_Next").transform.DOKill();
+        }
+
         void Update(){
             
         }
@@ -43,7 +49,7 @@ namespace OJ
             dialog = dialogMsg;
             GetCom<Text>("Text_Speaker").text = dialogMsg.speaker;
             for(int i=0;i<3;i++){
-                GetCom<Button>("Btn_Option_" + i).gameObject.SetActive(false);
+                GetCom<Button>("Options/Btn_Option_" + i).gameObject.SetActive(false);
             }
             GetCom<Image>("Img_Next").gameObject.SetActive(false);
             GetCom<Text>("Text_Content").text = "";
@@ -61,7 +67,7 @@ namespace OJ
                 GetCom<Image>("Img_Next").DOFade(1, .2f);
             }
             for(int i=0;i<dialog.options.Count;i++){
-                Button opt = GetCom<Button>("Btn_Option_" + i);
+                Button opt = GetCom<Button>("Options/Btn_Option_" + i);
                 opt.GetComponentInChildren<Text>().text = dialog.options[i];
                 opt.gameObject.SetActive(true);
             }
@@ -82,7 +88,7 @@ namespace OJ
                 return;
             }
             Button btn = GetCom<Button>(name);
-            Debug.Log(btn.GetComponentInChildren<Text>().text);
+            //Debug.Log(btn.GetComponentInChildren<Text>().text);
             Hide();
             dialog.callback?.Invoke(btn.GetComponentInChildren<Text>().text);
         }

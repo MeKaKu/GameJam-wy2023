@@ -7,7 +7,7 @@ namespace OJ
     [System.Serializable]
     public class GameData
     {
-        public Vector3 pos = Vector3.zero;
+        public string playerName;
         public Backpack backpack = new Backpack();
     }
 }
