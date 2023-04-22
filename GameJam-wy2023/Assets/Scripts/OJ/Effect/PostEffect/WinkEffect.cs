@@ -26,23 +26,6 @@ namespace OJ
             }
         }
 
-        protected override void Start()
-        {
-            base.Start();
-
-            Sequence sequence = DOTween.Sequence();
-            material.SetFloat("_Height", 0);
-            sequence.Append(
-                material.DOFloat(maxHeight, "_Height", 1f).SetDelay(1f)
-            );
-            sequence.Append(
-                material.DOFloat(minHeight, "_Height", .6f).SetLoops(4, LoopType.Yoyo)
-            );
-            sequence.Append(
-                material.DOFloat(2, "_Height", .8f).SetDelay(.6f)
-            );
-        }
-
         private void OnValidate() {
             material.SetFloat("_Height", height);
         }
