@@ -8,6 +8,9 @@ namespace OJ
     public class GameData
     {
         public string playerName;
+        public bool isMale;
+        public float hp = 1f;
+        public int soul = 3;
         public Backpack backpack = new Backpack();
     }
 }
