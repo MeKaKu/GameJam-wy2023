@@ -14,8 +14,13 @@ namespace OJ
 
         /// <summary>
         /// 玩家状态改变时
-        /// 参数：PlayerState | 改变之后的状态
         /// </summary>
         public const int PLAYER_STATE_CHANGED = 2;
+
+        /// <summary>
+        /// 显示人物提示
+        /// 参数：string
+        /// </summary>
+        public const int SHOW_MISSION_TIP = 3;
     }
 }
