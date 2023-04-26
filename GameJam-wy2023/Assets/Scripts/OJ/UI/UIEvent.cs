@@ -22,5 +22,11 @@ namespace OJ
         /// 参数：string
         /// </summary>
         public const int SHOW_MISSION_TIP = 3;
+
+        /// <summary>
+        /// 解谜界面
+        /// 参数：RiddleMsg
+        /// </summary>
+        public const int SHOW_RIDDLE_PANEL = 4;
     }
 }

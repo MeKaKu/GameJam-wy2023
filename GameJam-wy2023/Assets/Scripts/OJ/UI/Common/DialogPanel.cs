@@ -68,7 +68,7 @@ namespace OJ
             }
             for(int i=0;i<dialog.options.Count;i++){
                 Button opt = GetCom<Button>("Options/Btn_Option_" + i);
-                opt.GetComponentInChildren<Text>().text = dialog.options[i];
+                opt.GetComponentInChildren<Text>().text = dialog.options[i].Replace("$PlayerName$", DataManager.gameData.playerName);
                 opt.gameObject.SetActive(true);
             }
         }
@@ -90,7 +90,7 @@ namespace OJ
             Button btn = GetCom<Button>(name);
             //Debug.Log(btn.GetComponentInChildren<Text>().text);
             Hide();
-            dialog.callback?.Invoke(btn.GetComponentInChildren<Text>().text);
+            dialog.callback?.Invoke(dialog.options[btn.transform.GetSiblingIndex()]);
         }
     }
 

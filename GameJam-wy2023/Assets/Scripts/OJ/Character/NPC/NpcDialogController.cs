@@ -121,10 +121,16 @@ namespace OJ
         }
         void RiddleMission(){
             NpcDialog dialog = dialogs[dialogId];
-            Debug.Log("解谜任务<"+dialog.Content+">");
-            bool complete = false;
-            //...
-            if(!complete){//next --> 失败
+            //Debug.Log("解谜任务<"+dialog.Content+">");
+            RiddleMsg riddleMsg = new RiddleMsg();
+            riddleMsg.riddleId = int.Parse(dialog.Content);
+            riddleMsg.onResult = OnRiddleResult;
+            UIManager.Handle(UIEvent.SHOW_RIDDLE_PANEL, riddleMsg);
+        }
+
+        void OnRiddleResult(bool result){
+            NpcDialog dialog = dialogs[dialogId];
+            if(!result){//next --> 失败
                 dialogId = dialog.Next;
                 StartDialog();
             }
