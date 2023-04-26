@@ -24,10 +24,13 @@ namespace OJ
             }
         }
         private void Start() {
-            Possess(playerController);
+            //Possess(playerController);
+            followTarget = playerController;
+            playerController.PossessThis();
+            possessing = false;
         }
         private void Update() {
-            if(!possessing && Input.GetKeyDown(KeyCode.F)){
+            if(!possessing && Input.GetKeyDown(KeyCode.F) && !DataManager.flowing){
                 if(followTarget != null && followTarget != playerController){
                     //解除附身
                     playerController.transform.position = new Vector3(
@@ -43,6 +46,7 @@ namespace OJ
             Detect();
         }
         private void FixedUpdate() {
+            if(DataManager.flowing) return;
             Follow();
         }
         public void Possess(CameraController cameraController){
@@ -101,7 +105,7 @@ namespace OJ
             if(!possessing && outlineCamera){
                 Transform animal = outlineCamera.Detect();
                 if(animal){
-                    if(Input.GetMouseButtonDown(0)){
+                    if(Input.GetMouseButtonDown(0) && !DataManager.flowing){
                         CameraController cameraController = animal.GetComponent<CameraController>();
                         if(cameraController){
                             Possess(cameraController);

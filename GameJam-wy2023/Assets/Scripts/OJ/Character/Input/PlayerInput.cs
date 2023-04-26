@@ -8,11 +8,13 @@ namespace OJ
     {
         public Vector2 GetMouseMove()
         {
+            if(DataManager.flowing) return Vector2.zero;
             return new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         }
 
         public Vector2 GetMoveDir()
         {
+            if(DataManager.flowing) return Vector2.zero;
             float x = Input.GetAxis("Horizontal");
             float y = Input.GetAxis("Vertical");
             SquareToCircle(ref x, ref y);

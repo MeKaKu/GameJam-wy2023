@@ -28,6 +28,8 @@ namespace OJ
         public static ArchiveData archive;//当前使用的存档
         public static GameData gameData = new GameData();//游戏数据
         public static bool saving;
+        public static bool flowing;
+        public static bool raddling;
         /// <summary>
         /// 保存游戏
         /// </summary>
