@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Dye;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Unity.VisualScripting;
@@ -30,8 +32,14 @@ namespace OJ
         public float fov;
         [Header("视野距离")]
         public float fovLint;
-        [Header("ai光源")]
-        public Color color;
+        [Header("正常巡逻光源")]
+        public Color color1;
+        [Header("监测到玩家光源")]
+        public Color color2;
+        [Header("进入攻击范围光源")]
+        public Color color3;
+        // [Header("进入攻击范围光源")]
+        // public Color color;
         //ai巡逻目的地，数组填
         [Header("巡逻目的地(按顺序填写)")]
         public List<Vector3> aiList;
@@ -64,8 +72,8 @@ namespace OJ
         {
             _animator = GetComponent<Animator>();
             _light = GameObject.Find("/GuideRobot_rigged/Point Light").GetComponent<Light>();
-            _light.color = color;
-            _light.range = fovLint;
+            _light.color = color1;
+            _light.range = attackRange;
             _light.spotAngle = fov;
             _meshAgent = GetComponent<NavMeshAgent>();
             // _sphereCollider = GetComponent<CapsuleCollider>();
@@ -81,10 +89,12 @@ namespace OJ
         }
         void LateUpdate()
         {
-          
             Move();
             AutoMove();
             AutoAttack();
+            List<Dye.Item> item =  DataManager.configs.TbItem.DataList;
+            
+            Debug.Log(item.Count());
         }
 
         void Move()
@@ -95,6 +105,7 @@ namespace OJ
         {
             if (_isFov)
             {
+                _light.color = color2;
                 //方向 。敌人指向主角
                 Vector3 vector3 = player.transform.position - transform.position;
                 //Debug.Log("vector3"+111111);
@@ -107,10 +118,20 @@ namespace OJ
                         _sphereCollider.radius);
                     if (b)
                     {
+                     
+                        
                         if (hit.collider.transform.CompareTag("Player"))
                         {
+                            
+                               Vector3  enemy = transform.position;
+                               Vector3 players = player.transform.position;
+                               enemy.y = 0;
+                               players.y = 0;
+                            if ( Vector3.Distance(enemy,players)<attackRange)
+                            {
+                                _isShot = true;
+                            }
                             //_isFov = false;
-                            _isShot = true;
                             _playerTransform = player.transform.position;
                             _meshAgent.SetDestination(_playerTransform);
                             _meshAgent.speed = runSpeed;
@@ -124,7 +145,7 @@ namespace OJ
                 // Debug.Log(_aiListIndex);
                 _isShot = false;
                 _meshAgent.SetDestination(aiList[_aiListIndex]);
-                  //Debug.Log(Vector3.Distance(aiList[_aiListIndex],transform.position));
+                //Debug.Log(Vector3.Distance(aiList[_aiListIndex],transform.position));
                 if (Vector3.Distance(aiList[_aiListIndex],transform.position)<1f)
                 {
                   
@@ -147,20 +168,25 @@ namespace OJ
             
             if (_isShot)
             {
+                _light.color = color3;
                 if (_timeAdd == 0f)
                 {
                     _playerPosition = player.transform.position;
+                    Debug.Log("储存==="+_playerPosition);
                 }
                 _timeAdd = _timeAdd + Time.deltaTime;
                 if (_timeAdd>attackTime)
                 {
                     
                     RaycastHit hit;
-                    
                     bool b=Physics.Raycast(transform.position + transform.up,
                         (_playerPosition - transform.position).normalized, out hit, attackRange);
+                    Debug.Log("起点==="+ (transform.position + transform.up));
+                    //ssh -CNg -L 6006:127.0.0.1:6006 root@180.184.103.46 -p 32641  i9peWDNTAx
+                    Debug.Log("发射==="+(_playerPosition - transform.position).normalized);
                     if (!b)
                     {
+                        
                         if (Vector3.Distance(player.transform.position,transform.position)<1f)
                         {
                             if (life <= 0)
@@ -203,9 +229,11 @@ namespace OJ
         //进入视野
          private void OnTriggerEnter(Collider other)
          {
+             
              //Debug.Log(other.transform.tag);
-             if (other.transform.tag =="Player")
+             if (other.CompareTag("Player"))
              {
+                 _light.color = color2;
                  Debug.Log(other.transform.tag+"进入视野检测区");
                  _isFov = true;
             
@@ -216,8 +244,10 @@ namespace OJ
         private void OnTriggerExit(Collider other)
         {
             
-            if (other.transform.tag == "Player")
+            
+            if (other.CompareTag("Player") )
             {
+                _light.color = color1;
                 _isFov = false;
                 Debug.Log(other.transform.tag+"退出视野检测区");
                 //PlayerPrefs.SetString("isObjectName",other.name);
