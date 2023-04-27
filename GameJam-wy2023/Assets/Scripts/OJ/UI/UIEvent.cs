@@ -28,5 +28,11 @@ namespace OJ
         /// 参数：RiddleMsg
         /// </summary>
         public const int SHOW_RIDDLE_PANEL = 4;
+
+        /// <summary>
+        /// 显示交互提示
+        /// 参数：InteractMsg
+        /// </summary>
+        public const int SHOW_INTERACT_TIP = 5;
     }
 }
