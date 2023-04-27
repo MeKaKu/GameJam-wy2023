@@ -13,6 +13,7 @@ namespace OJ
         public int soul = 3;
         public List<int> completedFlows = new List<int>();
         public List<int> completedRiddles = new List<int>();
+        public List<int> completedInteractions = new List<int>();
         public Backpack backpack = new Backpack();
     }
 }
