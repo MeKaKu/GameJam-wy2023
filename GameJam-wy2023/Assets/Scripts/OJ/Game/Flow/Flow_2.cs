@@ -9,9 +9,11 @@ namespace OJ
     [RequireComponent(typeof(Collider))]
     public class Flow_2 : GameFlowBase
     {
+        private void Awake() {
+            flowId = 2;
+        }
         [SerializeField]FishController fish;
         private void OnTriggerExit(Collider other) {
-            Debug.Log("Trigger");
             if(other.tag.Equals("Player")){
                 TryProcess();
             }

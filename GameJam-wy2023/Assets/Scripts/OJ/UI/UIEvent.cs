@@ -34,5 +34,10 @@ namespace OJ
         /// 参数：InteractMsg
         /// </summary>
         public const int SHOW_INTERACT_TIP = 5;
+
+        /// <summary>
+        /// 参数：string
+        /// </summary>
+        public const int SHOW_SCREEN_TIP = 6;
     }
 }
