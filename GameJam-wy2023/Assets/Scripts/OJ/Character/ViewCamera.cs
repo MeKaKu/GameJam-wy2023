@@ -35,7 +35,7 @@ namespace OJ
                     //解除附身
                     playerController.transform.position = new Vector3(
                         followTarget.transform.position.x, 
-                        playerController.transform.position.y, 
+                        followTarget.transform.position.y, 
                         followTarget.transform.position.z
                     );
                     playerController.transform.forward = followTarget.transform.forward;
