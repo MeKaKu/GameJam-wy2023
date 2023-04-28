@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace OJ
 {
-    public class NpcDialogController : MonoBehaviour, IInteractObject
+    public class NpcDialogController : MonoBehaviour
     {
         [Header("NPC")]
         public int npcId = 0;
@@ -15,41 +15,34 @@ namespace OJ
         int dialogId = 0;
         bool interactable;
         DialogMsg dialogMsg;
-        InteractMsg interactMsg;
         protected void Start()
         {
             npc = DataManager.configs.TbNpc.Get(npcId);
             dialogs = npc.Dialogs;
             interactable = dialogs!=null && dialogs.Count > 0;
             dialogMsg = new DialogMsg();
-            interactMsg = new InteractMsg(){
-                tip = npc.Name, interactObject = this
-            };
+
+            GetComponentInChildren<TextMesh>().text = npc.Name;
         }
-        
+        bool interacting;
         private void OnTriggerEnter(Collider other) {
+            Debug.Log(other.name);
             if(other.tag.Equals("Player")){
-                interactMsg.active = true;
-                UIManager.Handle(UIEvent.SHOW_INTERACT_TIP, interactMsg);
+                interacting = true;
             }
         }
         private void OnTriggerExit(Collider other) {
             if(other.tag.Equals("Player")){
-                interactMsg.active = false;
-                UIManager.Handle(UIEvent.SHOW_INTERACT_TIP, interactMsg);
+                interacting = false;
             }
         }
-        // protected void Update()
-        // {
-        //     if(interactable && interacting && Input.GetKeyDown(KeyCode.F)){
-        //         StartDialog();
-        //     }
-        // }
-        public void Interact(){
-            if(interactable){
+        protected void Update()
+        {
+            if(interactable && interacting && Input.GetKeyDown(KeyCode.F)){
                 StartDialog();
             }
         }
+
         void StartDialog(){
             if(dialogId >= dialogs.Count){
                 return;
