@@ -87,7 +87,7 @@ Material:
     - _Parallax: 0.02
     - _ParticleLit: 1
     - _ParticleRadius: 0.05
-    - _Percent: -0.0010596514
+    - _Percent: 1.0136514
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
