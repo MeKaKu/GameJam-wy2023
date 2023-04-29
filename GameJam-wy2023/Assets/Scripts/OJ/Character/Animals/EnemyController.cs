@@ -38,11 +38,15 @@ namespace OJ
         public Color color2;
         [Header("进入攻击范围光源")]
         public Color color3;
+        //激光对象
+        private LineRenderer _lineRenderer; 
         // [Header("进入攻击范围光源")]
         // public Color color;
         //ai巡逻目的地，数组填
         [Header("巡逻目的地(按顺序填写)")]
         public List<Vector3> aiList;
+        [Header("子弹")]
+        public GameObject bullet;
         //动画控制器
         private Animator _animator;
         //光源参数
@@ -53,6 +57,7 @@ namespace OJ
         private bool _isFov = false;
         //更新主角位置
         private Vector3 _playerTransform;
+        
         //归零
         private Vector3 _restPosition = Vector3.zero;
         //寻路
@@ -65,6 +70,8 @@ namespace OJ
         private float _timeAdd;
         //记录射击位置
         private Vector3 _playerPosition;
+        //记录射击玩家位置
+        private Transform _playTransform;
         //存储动画参数
         //private HashIDs _hash;
         // Start is called before the first frame update
@@ -78,8 +85,13 @@ namespace OJ
             _meshAgent = GetComponent<NavMeshAgent>();
             // _sphereCollider = GetComponent<CapsuleCollider>();
             _sphereCollider = GameObject.Find("/GuideRobot_rigged/test").GetComponent<SphereCollider>();
-            
+            _lineRenderer = GetComponent<LineRenderer>();
             _sphereCollider.radius = fovLint;
+            //lineRenderer.SetPosition(0, transform.position);
+        // lineRenderer.SetPosition(1, targetPoint); 
+        // // 设置Line Renderer的宽度
+        // lineRenderer.startWidth = laserWidth; 
+        // lineRenderer.endWidth = laserWidth; 
         }
 
         // Update is called once per frame
@@ -94,7 +106,7 @@ namespace OJ
             AutoAttack();
             List<Dye.Item> item =  DataManager.configs.TbItem.DataList;
             
-            Debug.Log(item.Count());
+         //   Debug.Log(item.Count());
         }
 
         void Move()
@@ -172,7 +184,8 @@ namespace OJ
                 if (_timeAdd == 0f)
                 {
                     _playerPosition = player.transform.position;
-                    Debug.Log("储存==="+_playerPosition);
+                    _playTransform = player.transform;
+                    //Debug.Log("储存==="+_playerPosition);
                 }
                 _timeAdd = _timeAdd + Time.deltaTime;
                 if (_timeAdd>attackTime)
@@ -181,42 +194,40 @@ namespace OJ
                     RaycastHit hit;
                     bool b=Physics.Raycast(transform.position + transform.up,
                         (_playerPosition - transform.position).normalized, out hit, attackRange);
-                    Debug.Log("起点==="+ (transform.position + transform.up));
-                    //ssh -CNg -L 6006:127.0.0.1:6006 root@180.184.103.46 -p 32641  i9peWDNTAx
-                    Debug.Log("发射==="+(_playerPosition - transform.position).normalized);
+                    Debug.DrawLine(transform.position + transform.up, hit.point, Color.red);
+                    _lineRenderer.enabled = true;
+                    // _lineRenderer.SetPosition(0,transform.position);
+                    // _lineRenderer.SetPosition(1,hit.point);
+                    GameObject temp = Instantiate(bullet, transform.position, Quaternion.identity);
+                    Bullet bullets = temp.GetComponent<Bullet>();    
+                    bullets.current = _playTransform;
+                    bullets.level = 0; 
                     if (!b)
                     {
-                        
-                        if (Vector3.Distance(player.transform.position,transform.position)<1f)
-                        {
-                            if (life <= 0)
-                            {
-                                _isFov = false;
-                                Debug.Log("die");
-                                player.SetActive(false);
-                            }
-                            else
-                            {
-                                life = life- attack;
-                            }
-                        }
                         return;
                     }
-                    if (hit.collider.transform.CompareTag("Player")  || Vector3.Distance(player.transform.position,transform.position)<1f)
+                    else
                     {
-                        if (life <= 0)
-                        {
-                            _isFov = false;
-                            Debug.Log("die");
-                            player.SetActive(false);
-                        }
-                        else
-                        {
-                            life = life- attack;
-                        }
+                          if (hit.collider.transform.CompareTag("Player"))
+                          {
+                              if (life <= 0) 
+                              {
+                                  _isFov = false;
+                                  Debug.Log("die");
+                                  _lineRenderer.enabled = false;
+                                  player.SetActive(false);
+                              }
+                              else
+                              {
+                                  life = life- attack;
+                              }
+                          }
                     }
                     _timeAdd = 0f;
                 }
+                
+                // _lineRenderer.SetPosition(0,Vector3.zero);
+                // _lineRenderer.SetPosition(1,Vector3.zero);
             }
            
             // _timeAdd = 0f;
@@ -255,11 +266,6 @@ namespace OJ
                 // Destroy(other.gameObject);
                 // Debug.Log(player.transform.position.x);
             }
-        }
-
-        private void OnCollisionEnter(Collision other)
-        {
-            // Destroy(g);
         }
     }
 }

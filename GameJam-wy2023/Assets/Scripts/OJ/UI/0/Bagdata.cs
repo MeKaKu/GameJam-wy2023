@@ -18,7 +18,7 @@ namespace OJ
         //全部模板数据
         private List<Dye.Item> _list = new List<Item>();
         //背包数据
-        private List<Dye.Item> _listBag = new List<Item>();
+        public static List<Dye.Item> _listBag = new List<Item>();
         
         private List<RawImage> _rawImages = new List<RawImage>();
         [Header("物品本体")]
@@ -32,7 +32,6 @@ namespace OJ
         public int s;
         private String _objectName;
         private GameObject _bagDataRawImage;
-        
         //对应关系
         private Dictionary<String, Texture2D> _texture2Dss = new Dictionary<string, Texture2D>();
         private int _index = 0;
@@ -40,14 +39,19 @@ namespace OJ
         private int _pageIndex = 0;
         //当前页
         private List<Dye.Item> _pageBagItem = new List<Item>();
+        //当前拾取的物品名称
+        public Text text;
+        //当前拾取的物品ui对象
+        private GameObject _buttonGameObject;
+        private RectTransform _rectTransform;
         void Start()
         {
             Hide();
             _list = DataManager.configs.TbItem.DataList;
             PlayerPrefs.SetString("ObjectName",null);
+            _rectTransform = GameObject.Find("GetObjectButton").GetComponent<RectTransform>();
             for (int i = 0; i < 16; i++)
             {
-                
                 _rawImages.Add(GameObject.Find("Image/Panel/"+(i+1)+"/RawImage").GetComponent<RawImage>());
             }
 
@@ -56,14 +60,34 @@ namespace OJ
             {
                 _bagDataRawImage.SetActive(false);
             });;
+            _buttonGameObject = GameObject.Find("GetObjectButton");
+            text = GameObject.Find("GetObjectButton/Text").GetComponent<Text>();
+            
             _bagDataRawImage.SetActive(false);
+            PlayerPrefs.SetInt("isPlayerCollision",0);
         }
 
         // Update is called once per frame
         void Update()
         {
+            if (PlayerPrefs.GetInt("isPlayerCollision") == 1)
+            {
+                _buttonGameObject.SetActive(true);
+                Vector3 gameObjectPosition = new Vector3(PlayerPrefs.GetFloat("GameObjectPositionX"),
+                    PlayerPrefs.GetFloat("GameObjectPositionY"),PlayerPrefs.GetFloat("GameObjectPositionZ"));
+                Vector3 screenPos = Camera.main.WorldToScreenPoint(gameObjectPosition);
+                float offsetX = _rectTransform.rect.width *1.2f;
+                _rectTransform.position  = screenPos + new Vector3(-offsetX, 0, 0);
+                text.text = "按F获取"+PlayerPrefs.GetString("ObjectNameMomo");
+            }
+            else
+            {
+                _buttonGameObject.SetActive(false);
+            }
+           
             if (Input.GetKeyDown(KeyCode.B) )
             {
+                PushBag();
                 if (_isOpen)
                 {
                      Show();
@@ -75,7 +99,6 @@ namespace OJ
                   _isOpen = true;   
                 }
             }
-            
             GetObjectData();
         }
 
@@ -89,9 +112,7 @@ namespace OJ
                {
                    if (s == _list[i].Name) 
                    {  
-                      // Debug.Log(2333+_list[i].Name);
                        _listBag.Add(_list[i]);
-                      // Debug.Log(_listBag.Count);
                        //更新背包
                        PushBag();
                    }
@@ -100,10 +121,9 @@ namespace OJ
            }
            
         }
-
         void PushBag()
         {
-            Debug.Log(_pageIndex);
+            
             for (int i = 0; i < _rawImages.Count(); i++)
             {
                 _rawImages[i].texture = null;
@@ -148,14 +168,20 @@ namespace OJ
             Debug.Log(name);
             if (name == "Image/Button Right")
             {
-                _pageIndex++;
-                PushBag();
+                if (_listBag.Count/16>_pageIndex)
+                {
+                    _pageIndex++;
+                       PushBag();
+                }
                 return;
             }
             if (name == "Image/Button Left")
             {
-                _pageIndex--;
-                PushBag();
+                if (_pageIndex>0)
+                {
+                    _pageIndex--;
+                     PushBag();
+                }
                 return;
             }
             for (int i = 1; i <= _rawImages.Count; i++)
@@ -171,7 +197,7 @@ namespace OJ
                         if (texture2Ds[j].name == _rawImages[i-1].texture.name)
                         {
                             if (_rawImages[i-1].texture.name == "文件01" || _rawImages[i-1].texture.name == "文件02"  || 
-                                _rawImages[i-1].texture.name == "文件03" || _rawImages[i-1].texture.name == "石板")
+                                _rawImages[i-1].texture.name == "文件03" || _rawImages[i-1].texture.name == "石板" || _rawImages[i-1].texture.name == "手机")
                             {
                                 _bagDataRawImage.SetActive(true);
                                 GameObject.Find("BagData/RawImage/RawImage").GetComponent<RawImage>().texture =  texture2Ds[j];
@@ -192,10 +218,33 @@ namespace OJ
             }
             //base.OnClick(name);
         }
-
         public override void Hide()
         {
             base.Hide();
         }
+
+        public static bool ReMove(String objectName)
+        {
+            for (int i = 0; i < _listBag.Count; i++)
+            {
+                if (objectName == _listBag[i].Name)
+                {
+                    return _listBag.Remove(_listBag[i]);
+                }
+            }
+            return false;
+        }
+        public static Item GetList(String objectName)
+        {
+            for (int i = 0; i < _listBag.Count; i++)
+            {
+                if (objectName == _listBag[i].Name)
+                {
+                    return _listBag[i];
+                }
+            }
+            return null;
+        }
+      
     }
 }
