@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dye;
+using DyeFramework.Modules;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Unity.VisualScripting;
@@ -21,7 +22,7 @@ namespace OJ
         [Header("攻击范围")]
         public float attackRange;
         [Header("生命值")]
-        public int life;
+        public static int life = (int)DataManager.gameData.hp;
         [Header("攻击力")]
         public int attack;
         [Header("攻击间隔")]
@@ -50,7 +51,7 @@ namespace OJ
         //动画控制器
         private Animator _animator;
         //光源参数
-        private Light _light;
+        public Light _light;
         //下标
         private int _aiListIndex = 0;
         //是否进入视野
@@ -63,7 +64,7 @@ namespace OJ
         //寻路
         private NavMeshAgent _meshAgent;
         //碰撞tag
-        private SphereCollider _sphereCollider;
+        public SphereCollider _sphereCollider;
         //射击开关
         private bool _isShot;
         //记录间隔
@@ -78,13 +79,13 @@ namespace OJ
         void Start()
         {
             _animator = GetComponent<Animator>();
-            _light = GameObject.Find("/GuideRobot_rigged/Point Light").GetComponent<Light>();
+            // _light = GameObject.Find("/Point Light").GetComponent<Light>();
             _light.color = color1;
             _light.range = attackRange;
             _light.spotAngle = fov;
             _meshAgent = GetComponent<NavMeshAgent>();
             // _sphereCollider = GetComponent<CapsuleCollider>();
-            _sphereCollider = GameObject.Find("/GuideRobot_rigged/test").GetComponent<SphereCollider>();
+            // _sphereCollider = GameObject.Find("/GuideRobot_rigged/test").GetComponent<SphereCollider>();
             _lineRenderer = GetComponent<LineRenderer>();
             _sphereCollider.radius = fovLint;
             //lineRenderer.SetPosition(0, transform.position);
@@ -215,12 +216,14 @@ namespace OJ
                                   _isFov = false;
                                   Debug.Log("die");
                                   _lineRenderer.enabled = false;
-                                  player.SetActive(false);
+                                  //player.SetActive(false);
                               }
                               else
                               {
+                                  GameManager.Handle(4, attack);
                                   life = life- attack;
                               }
+                              
                           }
                     }
                     _timeAdd = 0f;

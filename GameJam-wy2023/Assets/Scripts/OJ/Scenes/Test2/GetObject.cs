@@ -34,7 +34,6 @@ namespace OJ
                 {
                      PlayerPrefs.SetString("ObjectName",transform.name);
                      PlayerPrefs.SetInt("isPlayerCollision",0);
-                   
                      gameObject.SetActive(false);
                      // Destroy(gameObject);
                 }

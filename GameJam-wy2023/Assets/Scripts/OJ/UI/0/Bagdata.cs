@@ -78,7 +78,7 @@ namespace OJ
                 Vector3 screenPos = Camera.main.WorldToScreenPoint(gameObjectPosition);
                 float offsetX = _rectTransform.rect.width *1.2f;
                 _rectTransform.position  = screenPos + new Vector3(-offsetX, 0, 0);
-                text.text = "按F获取"+PlayerPrefs.GetString("ObjectNameMomo");
+                text.text = "获取"+PlayerPrefs.GetString("ObjectNameMomo");
             }
             else
             {
