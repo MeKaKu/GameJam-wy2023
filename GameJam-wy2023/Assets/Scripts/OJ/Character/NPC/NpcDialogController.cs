@@ -25,6 +25,11 @@ namespace OJ
             interactMsg = new InteractMsg(){
                 tip = npc.Name, interactObject = this
             };
+
+            if(!DataManager.gameData.npcDialogIds.ContainsKey(npcId)){
+                DataManager.gameData.npcDialogIds.Add(npcId, 0);
+            }
+            dialogId = DataManager.gameData.npcDialogIds[npcId];
         }
         
         private void OnTriggerEnter(Collider other) {
@@ -98,6 +103,8 @@ namespace OJ
                     break;
                 }
             }
+
+            DataManager.gameData.npcDialogIds[npcId] = dialogId;
         }
 
         void OnChooseOption(string content){

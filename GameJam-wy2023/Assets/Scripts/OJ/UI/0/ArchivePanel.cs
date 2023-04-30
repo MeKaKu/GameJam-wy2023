@@ -26,7 +26,7 @@ namespace OJ
                 UIManager.ShowPanel("LoadingPanel");
                 DataManager.LoadArchive(id, (b)=>{
                     if(!string.IsNullOrEmpty(DataManager.gameData.playerName)){//已经创建过角色了
-                        SceneManager.LoadScene("2-main");
+                        SceneManager.LoadScene(DataManager.gameData.sceneId);
                         return;
                     }
                     else SceneManager.LoadScene("1");

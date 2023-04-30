@@ -33,7 +33,7 @@ namespace OJ
         }
         void UpdateState(){
             //...
-            hp.DOFillAmount(DataManager.gameData.hp, .5f);
+            hp.DOFillAmount(DataManager.gameData.hp * 1.0f / 100.0f, .5f);
             soul.DOFillAmount(DataManager.gameData.soul / 5.0f, .2f);
         }
         public override void Show()

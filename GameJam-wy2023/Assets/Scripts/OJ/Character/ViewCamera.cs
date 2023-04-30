@@ -16,7 +16,7 @@ namespace OJ
         Vector3 speed;
         [SerializeField]OutlineCamera outlineCamera;
         public PlayerController playerController;
-        CameraController followTarget;
+        public CameraController followTarget{get;private set;}
         private void Awake() {
             cam = GetComponent<Camera>();
             if(!playerController){

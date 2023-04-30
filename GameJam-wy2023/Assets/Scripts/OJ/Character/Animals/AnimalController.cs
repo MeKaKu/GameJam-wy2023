@@ -184,7 +184,7 @@ namespace OJ
         }
 
         [ContextMenu("Test/Death")]
-        void Die(){
+        public void Die(){
             animator.SetBool("Death_b", true);
         }
     }

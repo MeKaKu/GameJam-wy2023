@@ -42,6 +42,12 @@ namespace OJ
             saving = true;
             string path = Application.persistentDataPath + "/Save/" + archive.archiveId + ".bytes";
             try{
+                //背包
+                gameData.items.Clear();
+                foreach(var item in Bagdata._listBag){
+                    gameData.items.Add(item.Id);
+                }
+                
                 if(File.Exists(path)) File.Delete(path);
                 using(FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite)){
                     BinaryFormatter bf = new BinaryFormatter();
@@ -87,6 +93,12 @@ namespace OJ
                 using(MemoryStream ms = new MemoryStream(bytes)){
                     BinaryFormatter bf = new BinaryFormatter();
                     gameData = bf.Deserialize(ms) as GameData;
+
+                    //背包
+                    Bagdata._listBag.Clear();
+                    foreach(var itemId in gameData.items){
+                        Bagdata._listBag.Add(configs.TbItem.Get(itemId));
+                    }
                 }
                 saving = false;
                 callback?.Invoke(true);
