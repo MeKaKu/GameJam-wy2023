@@ -21,10 +21,10 @@ namespace OJ
         }
         private void Update() {
             if(!loaded){
-                LoadData();
                 loaded = true;
-                InvokeRepeating("SaveData", 30f, 30f);
+                LoadData();
                 UIManager.HidePanel("LoadingPanel");
+                InvokeRepeating("SaveData", 30f, 30f);
             }
         }
         public override void Execute(int eventCode, object arg)
@@ -54,6 +54,7 @@ namespace OJ
 
         void UpdateHp(int delta){
             DataManager.gameData.hp = Mathf.Clamp(DataManager.gameData.hp + delta, 0, 100);
+            UIManager.Handle(UIEvent.PLAYER_STATE_CHANGED);
             if(DataManager.gameData.hp <= 0){
                 ViewCamera viewCamera = FindObjectOfType<ViewCamera>();
                 if(viewCamera){

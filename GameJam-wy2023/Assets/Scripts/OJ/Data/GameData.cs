@@ -12,7 +12,7 @@ namespace OJ
         public int hp = 100;
         public int soul = 3;
         public int sceneId = 2;//玩家所在场景
-        public string position = "-12.510000228881836,1.7020000219345093,177.8300018310547}";//玩家位置信息
+        public string position = "-13.457375526428223,1.7020000219345093,182.16500854492188";//玩家位置信息
         public List<int> completedFlows = new List<int>();
         public List<int> completedRiddles = new List<int>();
         public List<int> completedInteractions = new List<int>();
