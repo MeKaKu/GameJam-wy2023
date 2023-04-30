@@ -195,7 +195,7 @@ namespace OJ
                     RaycastHit hit;
                     bool b=Physics.Raycast(transform.position + transform.up,
                         (_playerPosition - transform.position).normalized, out hit, attackRange);
-                    Debug.DrawLine(transform.position + transform.up, hit.point, Color.red);
+                    //Debug.DrawLine(transform.position + transform.up, hit.point, Color.red);
                     _lineRenderer.enabled = true;
                     // _lineRenderer.SetPosition(0,transform.position);
                     // _lineRenderer.SetPosition(1,hit.point);
@@ -209,6 +209,8 @@ namespace OJ
                     }
                     else
                     {
+                       // Debug.Log(life);
+                       // Debug.Log(DataManager.gameData.hp);
                           if (hit.collider.transform.CompareTag("Player"))
                           {
                               if (life <= 0) 
@@ -220,9 +222,13 @@ namespace OJ
                               }
                               else
                               {
-                                  GameManager.Handle(4, attack);
+                                  //Debug.Log(life+"ddd"+attack);
+                                  DataManager.gameData.hp -= attack;
+                                  //GameManager.Handle(4, attack);
+                                  
                                   life = life- attack;
                               }
+                              UIManager.Handle(UIEvent.PLAYER_STATE_CHANGED);
                               
                           }
                     }

@@ -183,17 +183,29 @@ namespace OJ
                      PushBag();
                 }
                 return;
-            }
+            } 
+            int startIndex = _pageIndex * 16;
+            int endIndex = Math.Min(startIndex + 16, _listBag.Count);
+            Debug.Log(endIndex - startIndex);
             for (int i = 1; i <= _rawImages.Count; i++)
             {
+                
                 if (name == "Image/Panel/"+i)
                 {
+                    if (i>endIndex - startIndex)
+                    {
+                        return;
+                    }
                     // Debug.Log("Image/Panel/"+i);
                     // Debug.Log(_rawImages[i-1].texture.name);
                    
                     for (int j = 0; j < texture2Ds.Count; j++)
                     {
                         //文件01
+                        if (_rawImages[i-1].texture == null)
+                        {
+                            return;
+                        }
                         if (texture2Ds[j].name == _rawImages[i-1].texture.name)
                         {
                             if (_rawImages[i-1].texture.name == "文件01" || _rawImages[i-1].texture.name == "文件02"  || 
@@ -204,11 +216,29 @@ namespace OJ
                             }
                             else
                             {
-                                 Debug.Log(_rawImages[i-1].texture.name);
+                                if (_rawImages[i-1].texture.name == "灵魂药剂")
+                                {
+                                    for (int k = 0; k < _listBag.Count(); k++)
+                                    {
+                                        if (_listBag[k].Name == "灵魂药剂")
+                                        {
+                                            DataManager.gameData.soul++;
+                                            UIManager.Handle(UIEvent.PLAYER_STATE_CHANGED);
+                                            Debug.Log(_listBag.Count());
+                                            _listBag.RemoveAt(k);
+                                            Debug.Log(_listBag.Count());
+                                            PushBag();
+                                        }
+                                    }
+                                }
+                                else
+                                {
                                  rawImageDown.texture = texture2Ds[j];
                                  rawImageDown.color = new Color(255, 255, 255, 255);
                                  rawImageUp.texture = _rawImages[i-1].texture;
-                                 rawImageUp.color = new Color(255, 255, 255, 255);
+                                 rawImageUp.color = new Color(255, 255, 255, 255);   
+                                }  
+                              
                             }
                            
                         }
