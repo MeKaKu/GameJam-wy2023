@@ -55,6 +55,12 @@ namespace OJ
                 return;
             }
             NpcDialog dialog = dialogs[dialogId];
+
+            if(!string.IsNullOrEmpty(dialog.Effect.Trim())){
+                string[] effects = dialog.Effect.Split("|");
+                TakeEffect(effects[0], int.Parse(effects[1]), int.Parse(effects[2]));
+            }
+
             switch(dialog.Type){
                 case "对话":{
                     dialogMsg.speaker = npc.Name;
@@ -115,7 +121,30 @@ namespace OJ
         void DeliveryMission(){
             NpcDialog dialog = dialogs[dialogId];
             Debug.Log("交付任务<"+dialog.Content+">");
+
+            string[] conditions = dialog.Condition.Split("|");
+            //检查 {} 数目是否足够
+            var items = Bagdata._listBag;
+            int count = 0;
+            foreach(var item in items){
+                if(item.Id.ToString() == conditions[1]){
+                    count ++;
+                }
+            }
             bool complete = false;
+            if(count > int.Parse(conditions[2])){
+                complete = true;
+                for(int i=items.Count-1; i>=0; i--){
+                    if(items[i].Id.ToString() == conditions[1]){
+                        count--;
+                        items.RemoveAt(i);
+                    }
+                    if(count <= 0){
+                        break;
+                    }
+                }
+            }
+
             //...
             if(!complete){//next --> 失败
                 dialogId = dialog.Next;
@@ -144,6 +173,13 @@ namespace OJ
             else{//next+1 --> 成功
                 dialogId = dialog.Next + 1;
                 StartDialog();
+            }
+        }
+
+        void TakeEffect(string type, int id, int count = 1){
+            if(type == "物品"){
+                for(int i=0;i<count;i++)
+                    Bagdata._listBag.Add(DataManager.configs.TbItem.Get(id));
             }
         }
     }

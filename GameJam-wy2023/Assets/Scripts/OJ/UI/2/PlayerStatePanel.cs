@@ -39,7 +39,6 @@ namespace OJ
         public override void Show()
         {
             group.DOFade(1, .5f).OnComplete(()=>{
-                base.Show();
                 UpdateState();
             });
         }
