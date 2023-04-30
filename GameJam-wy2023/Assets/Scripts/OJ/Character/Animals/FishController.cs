@@ -17,7 +17,9 @@ namespace OJ
         protected override void ExitGround()
         {
         }
-
+        protected override void StayGround()
+        {
+        }
         protected override void EnterGround()
         {
         }

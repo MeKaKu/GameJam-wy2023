@@ -736,8 +736,8 @@ Canvas:
   m_GameObject: {fileID: 639840820}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1767043919}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1397,13 +1397,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 639840824}
     m_Modifications:
+    - target: {fileID: 603081840722260850, guid: 8a568279096c8c949b1ead15f47657b1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -130.70001
+      objectReference: {fileID: 0}
+    - target: {fileID: 603081840722260850, guid: 8a568279096c8c949b1ead15f47657b1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -112.29999
+      objectReference: {fileID: 0}
     - target: {fileID: 603081841581112084, guid: 8a568279096c8c949b1ead15f47657b1, type: 3}
       propertyPath: m_Name
       value: CreateRolePanel
       objectReference: {fileID: 0}
     - target: {fileID: 603081841581112084, guid: 8a568279096c8c949b1ead15f47657b1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 603081841581112085, guid: 8a568279096c8c949b1ead15f47657b1, type: 3}
       propertyPath: m_Pivot.x
@@ -1487,6 +1495,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 603081841581112085, guid: 8a568279096c8c949b1ead15f47657b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 603081841581112089, guid: 8a568279096c8c949b1ead15f47657b1, type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 603081841581112089, guid: 8a568279096c8c949b1ead15f47657b1, type: 3}
+      propertyPath: m_BlocksRaycasts
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1977,6 +1993,14 @@ PrefabInstance:
     - target: {fileID: 3858260716775607671, guid: 002d747090b4117408ba42963629c753, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3858260718174832370, guid: 002d747090b4117408ba42963629c753, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -336.60004
+      objectReference: {fileID: 0}
+    - target: {fileID: 3858260718174832370, guid: 002d747090b4117408ba42963629c753, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 80.70001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 002d747090b4117408ba42963629c753, type: 3}
